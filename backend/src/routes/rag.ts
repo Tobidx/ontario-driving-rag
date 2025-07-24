@@ -1,7 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { logger } from '../utils/logger';
-import { ValidationError } from '../middleware/errorHandler';
 import { RAGService } from '../services/ragService';
 
 export const ragRouter = Router();
@@ -63,7 +62,11 @@ ragRouter.post('/query', async (req: Request, res: Response, next: NextFunction)
 
   } catch (error) {
     if (error instanceof z.ZodError) {
-      next(new ValidationError('Invalid request data', error.errors));
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid request data',
+        details: error.errors
+      });
     } else {
       next(error);
     }

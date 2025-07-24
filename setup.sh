@@ -10,14 +10,14 @@ fi
 
 # Start services with Docker Compose
 echo "🐳 Starting all services..."
-docker-compose up -d
+docker compose up -d
 
 echo "⏳ Waiting for services to be ready..."
 sleep 15
 
 # Run database migrations
 echo "🔨 Setting up database..."
-docker-compose exec backend npm run db:migrate
+docker compose exec backend npm run db:migrate
 
 echo "✅ Setup complete!"
 echo "🌟 Access your app at:"

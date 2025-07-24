@@ -4,11 +4,8 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { logger } from './utils/logger';
-import { errorHandler } from './middleware/errorHandler';
 import { ragRouter } from './routes/rag';
 import { healthRouter } from './routes/health';
-import { authRouter } from './routes/auth';
-import DatabaseService from './services/database';
 
 // Load environment variables
 dotenv.config({ path: '../.env' });
@@ -70,7 +67,6 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/health', healthRouter);
-app.use('/api/auth', authRouter);
 app.use('/api/rag', ragRouter);
 
 // 404 handler
@@ -86,8 +82,11 @@ app.use('*', (req, res) => {
   });
 });
 
-// Error handling
-app.use(errorHandler);
+// Simple error handling
+app.use((err: any, req: any, res: any, next: any) => {
+  logger.error('Server error:', err);
+  res.status(500).json({ error: 'Internal server error' });
+});
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
@@ -100,25 +99,11 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// Initialize database and start server
-async function startServer() {
-  try {
-    // Connect to database
-    const dbService = DatabaseService.getInstance();
-    await dbService.connect();
-    
-    // Start server
-    app.listen(PORT, () => {
-      logger.info(`🚀 MTO RAG API Server running on port ${PORT}`);
-      logger.info(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
-      logger.info(`🔗 Health check: http://localhost:${PORT}/api/health`);
-    });
-  } catch (error) {
-    logger.error('Failed to start server:', error);
-    process.exit(1);
-  }
-}
-
-startServer();
+// Start server
+app.listen(PORT, () => {
+  logger.info(`🚀 MTO RAG API Server running on port ${PORT}`);
+  logger.info(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+  logger.info(`🔗 Health check: http://localhost:${PORT}/api/health`);
+});
 
 export default app;

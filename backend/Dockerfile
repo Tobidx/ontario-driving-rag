@@ -15,13 +15,8 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Generate Prisma client
-RUN npx prisma generate
-
-# Install Python dependencies
-COPY ../requirements.txt ./
-COPY ../rag_engine.py ./
-RUN pip3 install -r requirements.txt
+# Install Python dependencies  
+RUN pip3 install rank-bm25 scikit-learn xai-sdk chromadb voyageai python-dotenv
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001

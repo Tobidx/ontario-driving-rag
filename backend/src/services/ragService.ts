@@ -1,6 +1,5 @@
 import { spawn } from 'child_process';
 import { logger } from '../utils/logger';
-import { db } from './database';
 
 export interface QueryOptions {
   maxSources?: number;
@@ -84,7 +83,7 @@ export class RAGService {
     });
   }
 
-  async query(question: string, options: QueryOptions = {}, userId?: string): Promise<RAGResult> {
+  async query(question: string, options: QueryOptions = {}): Promise<RAGResult> {
     if (!this.isInitialized) {
       throw new Error('RAG service not initialized');
     }
@@ -189,11 +188,6 @@ except Exception as e:
           if (resultMatch) {
             const result = JSON.parse(resultMatch[1]);
             if (result.success) {
-              // Save query to database
-              this.saveQuery(question, result, duration, userId).catch(error => {
-                logger.error('Failed to save query to database:', error);
-              });
-              
               resolve(result as RAGResult);
             } else {
               reject(new Error('RAG query failed'));
@@ -260,23 +254,4 @@ except Exception as e:
     ];
   }
 
-  private async saveQuery(question: string, result: any, duration: number, userId?: string): Promise<void> {
-    try {
-      await db.query.create({
-        data: {
-          userId,
-          question,
-          answer: result.answer,
-          sources: result.sources,
-          metadata: {
-            ...result.metadata,
-            duration,
-            timestamp: new Date().toISOString(),
-          }
-        }
-      });
-    } catch (error) {
-      logger.error('Error saving query to database:', error);
-    }
-  }
 }
