@@ -15,8 +15,9 @@ COPY backend/ ./
 # Build the application
 RUN npm run build
 
-# Install Python dependencies  
-RUN pip3 install rank-bm25 scikit-learn xai-sdk chromadb voyageai python-dotenv
+# Copy and install Python dependencies
+COPY backend/requirements.txt ./requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
