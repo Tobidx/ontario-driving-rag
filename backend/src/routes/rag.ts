@@ -21,7 +21,7 @@ const querySchema = z.object({
 });
 
 // Query endpoint
-ragRouter.post('/query', async (req: Request, res: Response, next: NextFunction) => {
+ragRouter.post('/query', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     // Validate request
     const { question, options } = querySchema.parse(req.body);
@@ -68,7 +68,7 @@ ragRouter.post('/query', async (req: Request, res: Response, next: NextFunction)
         details: error.errors
       });
     } else {
-      next(error);
+      return next(error);
     }
   }
 });
