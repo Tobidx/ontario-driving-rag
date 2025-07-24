@@ -4,6 +4,7 @@ services:
     name: mto-rag-backend
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     plan: free
     region: oregon
     healthCheckPath: /api/health
