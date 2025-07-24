@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  queries   Query[]
+  sessions  Session[]
+  
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("sessions")
+}
+
+model Query {
+  id         String   @id @default(cuid())
+  userId     String?
+  question   String
+  answer     String
+  sources    Json?    // Store source documents as JSON
+  metadata   Json?    // Store query metadata (timing, category, etc.)
+  createdAt  DateTime @default(now())
+  
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  @@map("queries")
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  filename    String
+  title       String?
+  content     String
+  metadata    Json?    // Store document metadata
+  chunks      Int      @default(0)
+  processed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("documents")
+}
+
+model SystemStats {
+  id            String   @id @default(cuid())
+  totalQueries  Int      @default(0)
+  totalUsers    Int      @default(0)
+  avgQueryTime  Float    @default(0)
+  systemHealth  String   @default("healthy")
+  updatedAt     DateTime @updatedAt
+  
+  @@map("system_stats")
+}

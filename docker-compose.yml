@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: mto_rag_db
+      POSTGRES_USER: mto_user
+      POSTGRES_PASSWORD: mto_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: "postgresql://mto_user:mto_password@postgres:5432/mto_rag_db"
+      XAI_API_KEY: ${XAI_API_KEY}
+      VOYAGE_API_KEY: ${VOYAGE_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: production
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

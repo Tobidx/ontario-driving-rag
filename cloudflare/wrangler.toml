@@ -1,0 +1,29 @@
+# Cloudflare Workers configuration
+name = "mto-rag-app"
+main = "src/index.js"
+compatibility_date = "2024-01-15"
+node_compat = true
+
+[env.production]
+name = "mto-rag-app-prod"
+routes = [
+  { pattern = "mto-rag.com/*", zone_name = "mto-rag.com" }
+]
+
+[env.staging]
+name = "mto-rag-app-staging"
+routes = [
+  { pattern = "staging.mto-rag.com/*", zone_name = "mto-rag.com" }
+]
+
+# Environment variables (set via wrangler secret)
+# wrangler secret put XAI_API_KEY
+# wrangler secret put VOYAGE_API_KEY  
+# wrangler secret put JWT_SECRET
+# wrangler secret put DATABASE_URL
+
+# R2 bucket for static assets
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "mto-rag-assets"
+preview_bucket_name = "mto-rag-assets-preview"

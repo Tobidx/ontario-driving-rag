@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 199 89% 48%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 199 89% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: all 0.3s ease;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+
+  /* Selection colors */
+  ::selection {
+    @apply bg-primary/20 text-primary-foreground;
+  }
+
+  /* Focus styles */
+  .focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply scroll-m-20;
+  }
+
+  h1 {
+    @apply text-4xl font-bold tracking-tight lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold tracking-tight;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+
+  h4 {
+    @apply text-xl font-semibold tracking-tight;
+  }
+
+  /* Prose styles for content */
+  .prose {
+    @apply text-foreground max-w-none;
+  }
+
+  .prose p {
+    @apply leading-7 [&:not(:first-child)]:mt-6;
+  }
+
+  .prose blockquote {
+    @apply mt-6 border-l-2 border-border pl-6 italic;
+  }
+
+  .prose ul {
+    @apply my-6 ml-6 list-disc [&>li]:mt-2;
+  }
+
+  .prose ol {
+    @apply my-6 ml-6 list-decimal [&>li]:mt-2;
+  }
+
+  .prose code {
+    @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+  }
+
+  .prose pre {
+    @apply overflow-x-auto rounded-lg border bg-card p-4;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+
+  /* Loading animations */
+  @keyframes shimmer {
+    0% {
+      background-position: -468px 0;
+    }
+    100% {
+      background-position: 468px 0;
+    }
+  }
+
+  .shimmer {
+    animation: shimmer 1.5s ease-in-out infinite;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 468px 100%;
+  }
+
+  /* Floating particles animation */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary)) 40%, hsl(var(--accent-foreground)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass morphism */
+  .glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: hsl(var(--background) / 0.75);
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  /* Glow effects */
+  .glow {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  .glow-text {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+  }
+}
