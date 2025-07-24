@@ -62,13 +62,15 @@ ragRouter.post('/query', async (req: Request, res: Response, next: NextFunction)
 
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Invalid request data',
         details: error.errors
       });
+      return;
     } else {
-      return next(error);
+      next(error);
+      return;
     }
   }
 });
