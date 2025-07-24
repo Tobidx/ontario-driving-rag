@@ -1,7 +1,7 @@
 FROM node:18-alpine
 
-# Install Python and required system packages
-RUN apk add --no-cache python3 py3-pip curl
+# Install Python and required system packages for building
+RUN apk add --no-cache python3 py3-pip curl build-base python3-dev
 
 WORKDIR /app
 
