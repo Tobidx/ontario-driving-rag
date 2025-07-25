@@ -15,7 +15,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Enhanced retrieval with optimizations
-import chromadb
+try:
+    import chromadb
+    CHROMADB_AVAILABLE = True
+except Exception as e:
+    print(f"⚠️ ChromaDB not available: {e}")
+    CHROMADB_AVAILABLE = False
+
 from rank_bm25 import BM25Okapi
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -56,14 +62,19 @@ class OptimizedEnhancedRAG:
         else:
             print("⚠️ XAI_API_KEY not found")
         
-        # Chroma with optimizations
-        try:
-            self.chroma_client = chromadb.PersistentClient(
-                path=str(self.data_dir / "vector_db")
-            )
-            print("✅ Chroma client ready")
-        except Exception as e:
-            print(f"⚠️ Chroma failed: {e}")
+        # Chroma with optimizations (if available)
+        if CHROMADB_AVAILABLE:
+            try:
+                self.chroma_client = chromadb.PersistentClient(
+                    path=str(self.data_dir / "vector_db")
+                )
+                print("✅ Chroma client ready")
+            except Exception as e:
+                print(f"⚠️ Chroma failed: {e}")
+                self.chroma_client = None
+        else:
+            print("⚠️ ChromaDB not available - using text-only retrieval")
+            self.chroma_client = None
     
     def setup(self):
         """Optimized setup."""
