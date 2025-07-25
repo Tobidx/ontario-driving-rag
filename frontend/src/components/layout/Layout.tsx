@@ -12,9 +12,9 @@ import {
   MoonIcon,
   ComputerDesktopIcon
 } from '@heroicons/react/24/outline'
-import { useTheme } from '../ThemeProvider'
-import { Button } from '../ui/Button'
-import { cn } from '../../lib/utils'
+import { useTheme } from '@/components/ThemeProvider'
+import { Button } from '@/components/ui/Button'
+import { cn } from '@/lib/utils'
 
 interface LayoutProps {
   children: React.ReactNode

@@ -11,9 +11,9 @@ import {
   TagIcon,
   ClipboardDocumentIcon
 } from '@heroicons/react/24/outline'
-import { Button } from '../components/ui/Button'
-import { cn, copyToClipboard, formatTime } from '../lib/utils'
-import { queryRAG, QueryResponse } from '../lib/api'
+import { Button } from '@/components/ui/Button'
+import { cn, copyToClipboard, formatTime } from '@/lib/utils'
+import { queryRAG, QueryResponse } from '@/lib/api'
 
 interface ChatMessage {
   id: string

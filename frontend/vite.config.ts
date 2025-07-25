@@ -5,10 +5,17 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  esbuild: {
+    target: 'es2020',
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  define: {
+    global: 'globalThis',
   },
   server: {
     port: 3000,
