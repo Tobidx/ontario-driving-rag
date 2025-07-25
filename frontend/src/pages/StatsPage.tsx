@@ -10,7 +10,7 @@ import {
   TagIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline'
-import { getStats, getHealth } from '@/lib/api'
+import { getStats, getHealth, StatsResponse, HealthResponse } from '@/lib/api'
 import { formatTime, formatNumber } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 
@@ -127,13 +127,13 @@ const HealthIndicator = ({ status }: { status: string }) => {
 }
 
 export function StatsPage() {
-  const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
+  const { data: stats, isLoading: statsLoading, error: statsError } = useQuery<StatsResponse>({
     queryKey: ['stats'],
     queryFn: getStats,
     refetchInterval: 30000, // Refetch every 30 seconds
   })
 
-  const { data: health, isLoading: healthLoading } = useQuery({
+  const { data: health, isLoading: healthLoading } = useQuery<HealthResponse>({
     queryKey: ['health'],
     queryFn: getHealth,
     refetchInterval: 15000, // Refetch every 15 seconds
@@ -194,7 +194,7 @@ export function StatsPage() {
                 <div className="rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold">Overall Status</h3>
-                    <HealthIndicator status={health.data.status} />
+                    <HealthIndicator status={health?.data.status || 'error'} />
                   </div>
                   
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

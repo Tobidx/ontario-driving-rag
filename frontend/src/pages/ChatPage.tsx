@@ -13,7 +13,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { Button } from '@/components/ui/Button'
 import { cn, copyToClipboard, formatTime } from '@/lib/utils'
-import { queryRAG } from '@/lib/api'
+import { queryRAG, QueryResponse } from '@/lib/api'
 
 interface ChatMessage {
   id: string
@@ -64,9 +64,9 @@ export function ChatPage() {
     scrollToBottom()
   }, [messages])
 
-  const mutation = useMutation({
+  const mutation = useMutation<QueryResponse, Error, { question: string }>({
     mutationFn: queryRAG,
-    onSuccess: (data) => {
+    onSuccess: (data: QueryResponse) => {
       const assistantMessage: ChatMessage = {
         id: Date.now().toString() + '_assistant',
         type: 'assistant',
