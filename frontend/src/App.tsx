@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
-import { ThemeProvider } from '@/components/ThemeProvider'
-import { Layout } from '@/components/layout/Layout'
-import { HomePage } from '@/pages/HomePage'
-import { ChatPage } from '@/pages/ChatPage'
-import { StatsPage } from '@/pages/StatsPage'
-import { AboutPage } from '@/pages/AboutPage'
+import { ThemeProvider } from './components/ThemeProvider'
+import { Layout } from './components/layout/Layout'
+import { HomePage } from './pages/HomePage'
+import { ChatPage } from './pages/ChatPage'
+import { StatsPage } from './pages/StatsPage'
+import { AboutPage } from './pages/AboutPage'
 
 function App() {
   return (
