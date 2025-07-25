@@ -21,13 +21,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # LLM
-try:
-    from xai_sdk import Client
-    from xai_sdk.chat import user, system
-    USE_XAI = True
-except ImportError:
-    from openai import OpenAI
-    USE_XAI = False
+from xai_sdk import Client
+from xai_sdk.chat import user, system
 
 class OptimizedEnhancedRAG:
     def __init__(self, data_dir: str = "data"):
@@ -54,15 +49,12 @@ class OptimizedEnhancedRAG:
         """Initialize clients with optimizations."""
         print("🔗 Initializing optimized clients...")
         
-        # LLM client with optimized settings
-        if USE_XAI and os.getenv("XAI_API_KEY"):
+        # XAI Grok client with optimized settings
+        if os.getenv("XAI_API_KEY"):
             self.grok_client = Client(api_key=os.getenv("XAI_API_KEY"))
-            print("✅ Grok client ready (optimized)")
-        elif os.getenv("OPENAI_API_KEY"):
-            self.grok_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-            print("✅ OpenAI client ready (fallback)")
+            print("✅ XAI Grok client ready (optimized)")
         else:
-            print("⚠️ No LLM API key found")
+            print("⚠️ XAI_API_KEY not found")
         
         # Chroma with optimizations
         try:
