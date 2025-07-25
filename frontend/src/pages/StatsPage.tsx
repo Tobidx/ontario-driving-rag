@@ -10,9 +10,9 @@ import {
   TagIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline'
-import { getStats, getHealth, StatsResponse, HealthResponse } from '@/lib/api'
-import { formatTime, formatNumber } from '@/lib/utils'
-import { cn } from '@/lib/utils'
+import { getStats, getHealth, StatsResponse, HealthResponse } from '../lib/api'
+import { formatTime, formatNumber } from '../lib/utils'
+import { cn } from '../lib/utils'
 
 const StatCard = ({ 
   title, 
